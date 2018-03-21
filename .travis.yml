@@ -21,7 +21,7 @@ before_deploy:
 
 deploy:
   provider: script
-  script: make publish
+  script: make build publish
   skip_cleanup: true
   on:
     tags: true
