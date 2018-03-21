@@ -16,6 +16,9 @@ before_install:
 
 script: make build
 
+before_deploy:
+- sh .travis/push.sh
+
 deploy:
   provider: script
   script: make publish
@@ -23,6 +26,3 @@ deploy:
   on:
     tags: true
   repo: riggerthegeek/get-iplayer
-
-after_deploy:
-- sh .travis/push.sh
