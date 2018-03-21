@@ -65,6 +65,7 @@ endif
 
 	git add ./VERSION
 	git commit -m "v${VER}"
+	git tag "v${VER}"
 	git push --tags
 	git push
 .PHONY: version
