@@ -17,7 +17,7 @@ before_install:
 script: make build
 
 before_deploy:
-- sh .travis/push.sh
+- sh ./.travis/push.sh
 
 deploy:
   provider: script
