@@ -2,4 +2,4 @@
 
 set -e
 
-get_iplayer --output="${OUTPUT_DIR}"
+get_iplayer --output="${OUTPUT_DIR}" $@
