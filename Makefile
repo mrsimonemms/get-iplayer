@@ -9,6 +9,8 @@ endif
 
 VERSION=$(shell cat VERSION)
 
+
+
 build:
 	@echo "Building latest Docker images"
 	docker build --file ./Dockerfile --tag ${TAG_NAME}:linux-amd64-latest .
@@ -52,3 +54,17 @@ publish:
 run:
 	docker run -it --rm -v="${PWD}/data:/opt/data" --name=${CONTAINER_NAME} ${TAG_NAME} ${PID}
 .PHONY: run
+
+version:
+ifndef VER
+$(error VER is not set)
+endif
+
+	rm ./VERSION
+	echo ${VER} > ./VERSION
+
+	git add ./VERSION
+	git commit -m "v${VER}"
+	git push --tags
+	git push
+.PHONY: version
