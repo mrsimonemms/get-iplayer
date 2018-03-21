@@ -6,10 +6,12 @@ setup_git() {
 }
 
 update_version() {
-  rm VERSION
-  echo ${TRAVIS_BUILD_NUMBER} > VERSION
-  git add VERSION
-  git commit --message "${TRAVIS_BUILD_NUMBER}"
+  NEW_VERSION=$(sed -e "s/v/${replace}/g" <<< ${TRAVIS_TAG})
+
+  rm ./VERSION || true
+  echo "${NEW_VERSION}" > ./VERSION
+  git add ./VERSION
+  git commit --message "${NEW_VERSION}"
 }
 
 upload_files() {
