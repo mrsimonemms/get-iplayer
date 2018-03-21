@@ -2,11 +2,6 @@ language: ruby
 
 sudo: required
 
-env:
-  global:
-  - GH_URL=github.com/riggerthegeek/get-iplayer.git
-  - secure: rJeoHexOTPNUv1sJE3zgYAR+BTdBbuW5z0wmjbawhbNQIU7lGeN+F/acs/ITBAQ1cOCGts8GAnBAi0k5EFqJH9KTa/fSmLTkFdQAR7XOYCrSoZBMTG3nzU2elYa8NNxFB0JP320EvO8YSdz5VYBTeIipBl9UpKZXqWZpIxqiiU80Gz55p6wgPmUVX+29/EOhKhouRmXV+YdHP4D01z5KbcUs6gcfVjG4s5X6EqckJQGIk0pnLAeT5fxxnBa4dtgBigRp3kegEfRRXxy1r39eXYqWLuc8e2VQD72M/ryvVO6WkdaZiznPbWlqBpIz0dWZa0cVIs1u8vjN4pbwUALRsIdeuFUw7Ibz9U/uiE+W62zkzWI42HyCVUth6wtJlY8RasqXCZxQbu6MXHqOekvzutzeSczz9flfbH7xip4uQ0n03r+/JC3ty+qeMSMbqbAU5eR4FWynMquWf962fzVTG9x0ABJM4A7XMDmEeQeROcDnbd/Jg2bNT7aUmiKBsAZMg0PV2KOxhWFEk/yFjz/fh9+f7wbCYPgn7xWGqOrvZ0sOlSpHB4Fw8jjHFKi3q7qD3SyxeJX444ipt6UQXP6mS7SfeboBEtyLBub1+91B5px9zl/Jz0qGBt+vKI2AJaZ6Z/UsxPc1GdNDTzpDdCT7TLGescHrhxCm6Xn5fIu8M3k=
-
 services:
 - docker
 
@@ -15,9 +10,6 @@ before_install:
 - docker login --username=${DOCKER_USER} --password=${DOCKER_PASS}
 
 script: make build
-
-before_deploy:
-- .travis/push.sh
 
 deploy:
   provider: script
