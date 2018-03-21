@@ -9,8 +9,6 @@ endif
 
 VERSION=$(shell cat VERSION)
 
-
-
 build:
 	@echo "Building latest Docker images"
 	docker build --file ./Dockerfile --tag ${TAG_NAME}:linux-amd64-latest .
@@ -56,10 +54,6 @@ run:
 .PHONY: run
 
 version:
-ifndef VER
-$(error VER is not set)
-endif
-
 	rm ./VERSION
 	echo ${VER} > ./VERSION
 
