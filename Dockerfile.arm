@@ -5,12 +5,19 @@ RUN [ "cross-build-start" ]
 LABEL maintainer="Simon Emms <simonemms.com>"
 
 ARG GET_IPLAYER_URL="https://raw.github.com/get-iplayer/get_iplayer/master/get_iplayer"
+ARG USER_NAME="get_iplayer"
 
 ENV OUTPUT_DIR=/opt/data
 
 WORKDIR /opt/get_iplayer
 ADD run.sh .
 ADD bin/AtomicParsley .
+
+VOLUME ${OUTPUT_DIR}
+
+# Create the user
+RUN addgroup -g 1000 ${USER_NAME} \
+  && adduser -u 1000 -G ${USER_NAME} -s /bin/sh -D ${USER_NAME}
 
 # System dependencies
 RUN apk add --no-cache curl libc6-compat
@@ -38,3 +45,5 @@ RUN get_iplayer --info \
 ENTRYPOINT [ "./run.sh" ]
 
 RUN [ "cross-build-end" ]
+
+USER ${USER_NAME}
