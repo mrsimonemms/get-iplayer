@@ -9,17 +9,17 @@ const { spawn } = require('child_process');
 
 /* Files */
 
-function execute (data) {
+function execute(opts) {
   return new Promise((resolve, reject) => {
     const args = [];
 
-    Object.keys(data)
-      .forEach(key => {
-        const value = data[key];
+    Object.keys(opts)
+      .forEach((key) => {
+        const value = opts[key];
 
         if (value.length > 0) {
-          value.forEach(v => {
-            args.push(`${key}=${v}`)
+          value.forEach((v) => {
+            args.push(`${key}=${v}`);
           });
         } else {
           args.push(key);
@@ -28,8 +28,8 @@ function execute (data) {
 
     const getIplayer = spawn('get_iplayer', args);
 
-    getIplayer.stdout.on('data', data => {
-      process.stdout.write(data)
+    getIplayer.stdout.on('data', (data) => {
+      process.stdout.write(data);
     });
 
     getIplayer.stderr.on('data', (data) => {
@@ -46,9 +46,9 @@ function execute (data) {
   });
 }
 
-function run (args) {
+function run(args) {
   /* Check if we have any PIDs set */
-  if (args.hasOwnProperty('--pid')) {
+  if (Object.prototype.hasOwnProperty.call(args, '--pid')) {
     const pids = args['--pid']
       .reduce((result, item) => {
         result.push(...item.split(','));
@@ -56,18 +56,19 @@ function run (args) {
         return result;
       }, []);
 
-    delete args['--pid'];
+    delete args['--pid']; // eslint-disable-line no-param-reassign
 
-    return pids.reduce((thenable, pid) => {
-      return thenable
-        .then(() => {
-          args['--pid'] = [
-            pid.trim()
-          ];
-
-          return execute(args);
+    return pids.reduce((thenable, pid) => thenable
+      .then(() => {
+        Object.defineProperty(args, '--pid', {
+          enumerable: true,
+          value: [
+            pid.trim(),
+          ],
         });
-    }, Promise.resolve());
+
+        return execute(args);
+      }), Promise.resolve());
   }
 
   return execute(args);
@@ -76,10 +77,13 @@ function run (args) {
 const args = process.argv
   .reduce((result, item, id) => {
     if (id > 1) {
-      const [ key, value ] = item.split('=');
+      const [key, value] = item.split('=');
 
-      if (!result.hasOwnProperty(key)) {
-        result[key] = [];
+      if (!Object.prototype.hasOwnProperty.call(result, key)) {
+        Object.defineProperty(result, key, {
+          enumerable: true,
+          value: [],
+        });
       }
 
       if (value !== undefined) {
@@ -91,7 +95,7 @@ const args = process.argv
   }, {});
 
 args['--output'] = [
-  process.env.OUTPUT_DIR
+  process.env.OUTPUT_DIR,
 ];
 
 Promise.resolve()
