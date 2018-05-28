@@ -2,3 +2,5 @@
 .DS_Store
 Thumbs.db
 /docker
+/download
+node_modules
