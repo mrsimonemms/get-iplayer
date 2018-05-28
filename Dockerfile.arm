@@ -1,23 +1,18 @@
-FROM resin/raspberrypi3-alpine:latest
-
+FROM resin/raspberrypi3-alpine-node:8-slim
 RUN [ "cross-build-start" ]
 
 LABEL maintainer="Simon Emms <simonemms.com>"
 
 ARG GET_IPLAYER_URL="https://raw.github.com/get-iplayer/get_iplayer/master/get_iplayer"
-ARG USER_NAME="get_iplayer"
+ARG USER_NAME="node"
 
 ENV OUTPUT_DIR=/opt/data
 
 WORKDIR /opt/get_iplayer
-ADD run.sh .
+ADD index.js .
 ADD bin/AtomicParsley .
 
 VOLUME ${OUTPUT_DIR}
-
-# Create the user
-RUN addgroup -g 1000 ${USER_NAME} \
-  && adduser -u 1000 -G ${USER_NAME} -s /bin/sh -D ${USER_NAME}
 
 # System dependencies
 RUN apk add --no-cache curl libc6-compat
@@ -34,15 +29,14 @@ RUN curl -kLO ${GET_IPLAYER_URL} \
 # Clean up after ourselves (libc6-compat is required by AtomicParsley)
 RUN apk del curl \
   && rm ./AtomicParsley \
-  && rm ./get_iplayer \
-  && chmod 755 ./run.sh
+  && rm ./get_iplayer
 
 # Check versions for dependencies
 RUN get_iplayer --info \
   && ffmpeg -version \
   && AtomicParsley --version
 
-ENTRYPOINT [ "./run.sh" ]
+ENTRYPOINT [ "node", "index.js" ]
 
 RUN [ "cross-build-end" ]
 
