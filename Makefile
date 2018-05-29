@@ -52,3 +52,14 @@ publish:
 run:
 	docker run -it --rm -v="${PWD}/data:/opt/data" --name=${CONTAINER_NAME} ${TAG_NAME} ${PID}
 .PHONY: run
+
+version:
+	rm ./VERSION
+	echo ${VER} > ./VERSION
+
+	git add ./VERSION
+	git commit -m "v${VER}"
+	git tag "v${VER}"
+	git push --tags
+	git push
+.PHONY: version
