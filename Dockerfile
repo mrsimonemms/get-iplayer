@@ -7,6 +7,7 @@ ARG GET_IPLAYER_URL="https://raw.github.com/get-iplayer/get_iplayer/master/get_i
 ARG USER_NAME="get_iplayer"
 
 ENV OUTPUT_DIR=/opt/data
+ENV TMP_OUTPUT_DIR=/opt/tmp
 
 WORKDIR /opt/get_iplayer
 ADD run.sh .
@@ -34,7 +35,9 @@ RUN curl -kLO ${GET_IPLAYER_URL} \
 RUN apk del curl \
   && rm ./AtomicParsley \
   && rm ./get_iplayer \
-  && chmod 755 ./run.sh
+  && chmod 755 ./run.sh \
+  && mkdir -p ${TMP_OUTPUT_DIR} \
+  && chown ${USER_NAME}:${USER_NAME} ${TMP_OUTPUT_DIR}
 
 USER ${USER_NAME}
 
