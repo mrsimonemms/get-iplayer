@@ -7,6 +7,10 @@ LABEL maintainer="Simon Emms <simonemms.com>"
 ARG GET_IPLAYER_URL="https://raw.github.com/get-iplayer/get_iplayer/master/get_iplayer"
 ARG USER_NAME="get_iplayer"
 
+ARG IPLAYER_TO_PLEX_URL="https://github.com/riggerthegeek/iplayer-to-plex/releases/download"
+ARG IPLAYER_TO_PLEX_ARCH="arm"
+ARG IPLAYER_TO_PLEX_VERSION="0.1.0"
+
 ENV OUTPUT_DIR=/opt/data
 ENV TMP_OUTPUT_DIR=/opt/tmp
 
@@ -31,6 +35,13 @@ RUN apk add --no-cache perl-libwww perl-lwp-protocol-https perl-mojolicious perl
 # Install get_iplayer
 RUN curl -kLO ${GET_IPLAYER_URL} \
   && install -m 755 ./get_iplayer /usr/local/bin
+
+# Install iPlayer-to-plex
+# @link https://stackoverflow.com/questions/34729748/installed-go-binary-not-found-in-path-on-alpine-linux-docker
+RUN mkdir /lib64 \
+  && ln -s /lib/libc.musl-x86_64.so.1 /lib64/ld-linux-x86-64.so.2 \
+  && curl -L -o ./iplayer-to-plex ${IPLAYER_TO_PLEX_URL}/v${IPLAYER_TO_PLEX_VERSION}/iplayer-to-plex-linux-${IPLAYER_TO_PLEX_ARCH} \
+  && chmod +x ./iplayer-to-plex
 
 # Clean up after ourselves (libc6-compat is required by AtomicParsley)
 RUN apk del curl \
