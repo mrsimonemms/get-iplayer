@@ -8,7 +8,7 @@ ARG USER_NAME="get_iplayer"
 
 ARG IPLAYER_TO_PLEX_URL="https://github.com/riggerthegeek/iplayer-to-plex/releases/download"
 ARG IPLAYER_TO_PLEX_ARCH="amd64"
-ARG IPLAYER_TO_PLEX_VERSION="0.1.2"
+ARG IPLAYER_TO_PLEX_VERSION="0.3.0"
 
 ENV OUTPUT_DIR=/opt/data
 ENV TMP_OUTPUT_DIR=/opt/tmp
