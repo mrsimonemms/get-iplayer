@@ -1,0 +1,61 @@
+name: Build
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  schedule:
+    - cron: "0 2 1 * *" # Every first of month at 2am
+  workflow_dispatch:
+permissions:
+  contents: write
+  packages: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get branch names
+        id: branch-name
+        uses: tj-actions/branch-names@v6
+        with:
+          strip_tag_prefix: v
+
+      - name: Generate Docker tag
+        id: docker
+        run: |
+          echo "image_name=ghcr.io/${GITHUB_REPOSITORY,,}" >> "$GITHUB_OUTPUT"
+          echo "tag_name=$(date -I)" >> "$GITHUB_OUTPUT"
+
+      - name: Build and push - AMD64
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          platforms: linux/amd64
+          push: ${{ github.ref == 'refs/heads/main' }}
+          tags: "${{ steps.docker.outputs.image_name }}:latest,${{ steps.docker.outputs.image_name }}:linux-amd64-latest,${{ steps.docker.outputs.image_name }}:${{ steps.docker.outputs.tag_name }}"
+
+      - name: Build and push - ARM
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ./Dockerfile.arm
+          platforms: linux/armv7
+          push: ${{ github.ref == 'refs/heads/main' }}
+          tags: "${{ steps.docker.outputs.image_name }}:linux-arm-latest,${{ steps.docker.outputs.image_name }}:${{ steps.docker.outputs.tag_name }}"
