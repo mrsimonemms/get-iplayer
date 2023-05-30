@@ -1,7 +1,5 @@
 FROM alpine:latest
 
-LABEL maintainer="Simon Emms <simon@simonemms.com>"
-
 ARG ATOMIC_PARSLEY_URL="https://bitbucket.org/shield007/atomicparsley/raw/68337c0c05ec4ba2ad47012303121aaede25e6df/downloads/build_linux_x86_64/AtomicParsley"
 ARG GET_IPLAYER_URL="https://raw.github.com/get-iplayer/get_iplayer/master/get_iplayer"
 ARG USER_NAME="get_iplayer"
@@ -14,7 +12,7 @@ ENV OUTPUT_DIR=/opt/data
 ENV TMP_OUTPUT_DIR=/opt/tmp
 
 WORKDIR /opt/get_iplayer
-ADD run.sh .
+COPY --chmod=755 entrypoint.sh .
 
 VOLUME ${OUTPUT_DIR}
 
@@ -46,10 +44,9 @@ RUN mkdir /lib64 \
 RUN apk del curl \
   && rm ./AtomicParsley \
   && rm ./get_iplayer \
-  && chmod 755 ./run.sh \
   && mkdir -p ${TMP_OUTPUT_DIR} \
   && chown ${USER_NAME}:${USER_NAME} ${TMP_OUTPUT_DIR}
 
 USER ${USER_NAME}
 
-ENTRYPOINT [ "./run.sh" ]
+ENTRYPOINT [ "./entrypoint.sh" ]
