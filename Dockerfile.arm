@@ -2,8 +2,6 @@ FROM resin/raspberrypi3-alpine:latest
 
 RUN [ "cross-build-start" ]
 
-LABEL maintainer="Simon Emms <simonemms.com>"
-
 ARG GET_IPLAYER_URL="https://raw.github.com/get-iplayer/get_iplayer/master/get_iplayer"
 ARG USER_NAME="get_iplayer"
 
@@ -15,7 +13,7 @@ ENV OUTPUT_DIR=/opt/data
 ENV TMP_OUTPUT_DIR=/opt/tmp
 
 WORKDIR /opt/get_iplayer
-ADD run.sh .
+COPY --chmod=755 entrypoint.sh .
 ADD bin/AtomicParsley .
 
 VOLUME ${OUTPUT_DIR}
@@ -47,7 +45,6 @@ RUN mkdir /lib64 \
 RUN apk del curl \
   && rm ./AtomicParsley \
   && rm ./get_iplayer \
-  && chmod 755 ./run.sh \
   && mkdir -p ${TMP_OUTPUT_DIR} \
   && chown ${USER_NAME}:${USER_NAME} ${TMP_OUTPUT_DIR}
 
@@ -56,7 +53,7 @@ RUN get_iplayer --info \
   && ffmpeg -version \
   && AtomicParsley --version
 
-ENTRYPOINT [ "./run.sh" ]
+ENTRYPOINT [ "./entrypoint.sh" ]
 
 RUN [ "cross-build-end" ]
 
