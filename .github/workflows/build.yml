@@ -43,19 +43,10 @@ jobs:
           echo "image_name=ghcr.io/${GITHUB_REPOSITORY,,}" >> "$GITHUB_OUTPUT"
           echo "tag_name=$(date -I)" >> "$GITHUB_OUTPUT"
 
-      - name: Build and push - AMD64
+      - name: Build and push
         uses: docker/build-push-action@v3
         with:
           context: .
-          platforms: linux/amd64
+          platforms: linux/amd64,linux/arm/v7,linux/arm64
           push: ${{ github.ref == 'refs/heads/main' }}
-          tags: "${{ steps.docker.outputs.image_name }}:latest,${{ steps.docker.outputs.image_name }}:linux-amd64-latest,${{ steps.docker.outputs.image_name }}:${{ steps.docker.outputs.tag_name }}"
-
-      - name: Build and push - ARM
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          file: ./Dockerfile.arm
-          platforms: linux/armv7
-          push: ${{ github.ref == 'refs/heads/main' }}
-          tags: "${{ steps.docker.outputs.image_name }}:linux-arm-latest,${{ steps.docker.outputs.image_name }}:${{ steps.docker.outputs.tag_name }}"
+          tags: "${{ steps.docker.outputs.image_name }}:latest,${{ steps.docker.outputs.image_name }}:${{ steps.docker.outputs.tag_name }}"
