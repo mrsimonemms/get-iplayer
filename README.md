@@ -1,21 +1,40 @@
 # Get iPlayer
 
+Docker container for [Get iPlayer](https://github.com/get-iplayer/get_iplayer)
+
 <!-- toc -->
 
-* [Open in Gitpod](#open-in-gitpod)
-* [Open in devbox](#open-in-devbox)
+* [Purpose](#purpose)
+* [Contributing](#contributing)
+  * [Open in Gitpod](#open-in-gitpod)
+  * [Open in devbox](#open-in-devbox)
 
 <!-- Regenerate with "pre-commit run -a markdown-toc" -->
 
 <!-- tocstop -->
 
-Docker container for [Get iPlayer](https://github.com/get-iplayer/get_iplayer)
+## Purpose
 
-## Open in Gitpod
+This project simplifies getting started with the [Get iPlayer](https://github.com/get-iplayer/get_iplayer)
+project by providing a Docker image with it pre-installed. It is tested on
+AMD64, ARMv7 and ARM64 architectures.
+
+To use, simply download the Docker image:
+
+```shell
+docker run -it --rm -v "/data:/opt/data" ghcr.io/mrsimonemms/get-iplayer
+```
+
+This will save any data to the `/data` volume. The entrypoint passes through
+any arguments to the `get-iplayer` binary.
+
+## Contributing
+
+### Open in Gitpod
 
 * [Open in Gitpod](https://gitpod.io/from-referrer/)
 
-## Open in devbox
+### Open in devbox
 
 * `curl -fsSL https://get.jetpack.io/devbox | bash`
 * `devbox shell`
