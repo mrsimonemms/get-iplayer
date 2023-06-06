@@ -8,7 +8,7 @@ RUN cmake . \
   && cmake --build . --config Release
 
 FROM alpine:latest AS deps
-ARG IPLAYER_TO_PLEX_URL="https://github.com/riggerthegeek/iplayer-to-plex/releases/download"
+ARG IPLAYER_TO_PLEX_URL="https://github.com/mrsimonemms/iplayer-to-plex/releases/download"
 ARG IPLAYER_TO_PLEX_VERSION="0.3.0"
 ARG TARGETARCH
 WORKDIR /opt/app
