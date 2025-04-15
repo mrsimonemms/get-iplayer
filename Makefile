@@ -1,4 +1,3 @@
-#!/bin/sh
 # Copyright 2025 Simon Emms <simon@simonemms.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,14 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
-set -e
-
-# Download the file
-get_iplayer --output="${TMP_OUTPUT_DIR}" --whitespace "${@}"
-
-# Convert the filename
-./iplayer-to-plex "${TMP_OUTPUT_DIR}"
-
-# Copy it to the output directory
-cp -Rf "${TMP_OUTPUT_DIR}"/* "${OUTPUT_DIR}"
+cruft-update:
+ifeq (,$(wildcard .cruft.json))
+	@echo "Cruft not configured"
+else
+	@cruft check || cruft update --skip-apply-ask --refresh-private-variables
+endif
+.PHONY: cruft-update
