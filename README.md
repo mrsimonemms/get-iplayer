@@ -6,8 +6,7 @@ Docker container for [Get iPlayer](https://github.com/get-iplayer/get_iplayer)
 
 * [Purpose](#purpose)
 * [Contributing](#contributing)
-  * [Open in Gitpod](#open-in-gitpod)
-  * [Open in devbox](#open-in-devbox)
+  * [Open in a container](#open-in-a-container)
 
 <!-- Regenerate with "pre-commit run -a markdown-toc" -->
 
@@ -30,11 +29,6 @@ any arguments to the `get-iplayer` binary.
 
 ## Contributing
 
-### Open in Gitpod
+### Open in a container
 
-* [Open in Gitpod](https://gitpod.io/from-referrer/)
-
-### Open in devbox
-
-* `curl -fsSL https://get.jetpack.io/devbox | bash`
-* `devbox shell`
+* [Open in a container](https://code.visualstudio.com/docs/devcontainers/containers)
